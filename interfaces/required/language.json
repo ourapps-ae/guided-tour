@@ -1,0 +1,23 @@
+{
+  "id": "language",
+  "type": "ae/language",
+  "version": "1.0.0",
+  "notes": "What guided-tour takes from the translations component: one function from a translation key to text, built by the application as lookup over the current messages (selectLanguage chooses which messages).",
+  "operations": {
+    "lookup": {
+      "arguments": [
+        "messages:map<string,string>",
+        "key:string"
+      ],
+      "returns": "string; the application passes (key)=>lookup(messages,key) as translate"
+    },
+    "selectLanguage": {
+      "arguments": [
+        "requested:string",
+        "supported:string[]",
+        "fallback:string"
+      ],
+      "returns": "string; chooses the messages"
+    }
+  }
+}

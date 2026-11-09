@@ -1,0 +1,49 @@
+{
+  "id": "ourapps-ae.guided-tour",
+  "name": "Guided tour",
+  "kind": "component",
+  "status": "example",
+  "package": "ourapps-ae/guided-tour",
+  "version": "0.3.0",
+  "ports": [
+    {
+      "id": "controls",
+      "name": "Controls",
+      "direction": "input",
+      "kind": "interface",
+      "type": "ae/controls",
+      "version": "1.0.0",
+      "required": true,
+      "cardinality": "one"
+    },
+    {
+      "id": "preferences",
+      "name": "Preferences",
+      "direction": "input",
+      "kind": "interface",
+      "type": "ae/preferences",
+      "version": "1.0.0",
+      "required": true,
+      "cardinality": "one"
+    },
+    {
+      "id": "language",
+      "name": "Language",
+      "direction": "input",
+      "kind": "interface",
+      "type": "ae/language",
+      "version": "1.0.0",
+      "required": true,
+      "cardinality": "one"
+    },
+    {
+      "id": "guided-tour",
+      "name": "Guided tour",
+      "direction": "output",
+      "kind": "interface",
+      "type": "ae/guided-tour",
+      "version": "1.0.0"
+    }
+  ],
+  "settings": []
+}

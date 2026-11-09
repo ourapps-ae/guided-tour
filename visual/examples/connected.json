@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "id": "guided-tour-connected",
+  "title": "Guided tour: connected consumer",
+  "status": "example",
+  "view": "component",
+  "focus": "component",
+  "definitions": [
+    {
+      "id": "ourapps-ae.guided-tour",
+      "name": "Guided tour",
+      "kind": "component",
+      "status": "example",
+      "package": "ourapps-ae/guided-tour",
+      "version": "0.3.0",
+      "ports": [
+        {
+          "id": "controls",
+          "name": "Controls",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/controls",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "preferences",
+          "name": "Preferences",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/preferences",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "language",
+          "name": "Language",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/language",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "guided-tour",
+          "name": "Guided tour",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/guided-tour",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    },
+    {
+      "id": "consumer",
+      "name": "Example application consumer",
+      "kind": "application",
+      "status": "example",
+      "revision": "0.1.0",
+      "ports": [
+        {
+          "id": "guided-tour",
+          "name": "Guided tour",
+          "direction": "input",
+          "kind": "interface",
+          "type": "ae/guided-tour",
+          "version": "1.0.0",
+          "required": true,
+          "cardinality": "one"
+        },
+        {
+          "id": "controls",
+          "name": "Controls",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/controls",
+          "version": "1.0.0"
+        },
+        {
+          "id": "preferences",
+          "name": "Preferences",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/preferences",
+          "version": "1.0.0"
+        },
+        {
+          "id": "language",
+          "name": "Language",
+          "direction": "output",
+          "kind": "interface",
+          "type": "ae/language",
+          "version": "1.0.0"
+        }
+      ],
+      "settings": []
+    }
+  ],
+  "instances": [
+    {
+      "id": "component",
+      "name": "Guided tour",
+      "definition": "ourapps-ae.guided-tour",
+      "configuration": {}
+    },
+    {
+      "id": "consumer",
+      "name": "Example consumer",
+      "definition": "consumer",
+      "configuration": {}
+    }
+  ],
+  "connections": [
+    {
+      "source": {
+        "instance": "component",
+        "port": "guided-tour"
+      },
+      "target": {
+        "instance": "consumer",
+        "port": "guided-tour"
+      }
+    },
+    {
+      "source": {
+        "instance": "consumer",
+        "port": "controls"
+      },
+      "target": {
+        "instance": "component",
+        "port": "controls"
+      }
+    },
+    {
+      "source": {
+        "instance": "consumer",
+        "port": "preferences"
+      },
+      "target": {
+        "instance": "component",
+        "port": "preferences"
+      }
+    },
+    {
+      "source": {
+        "instance": "consumer",
+        "port": "language"
+      },
+      "target": {
+        "instance": "component",
+        "port": "language"
+      }
+    }
+  ]
+}

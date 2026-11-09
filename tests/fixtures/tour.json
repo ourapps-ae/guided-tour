@@ -1,0 +1,283 @@
+{
+ "rings": [
+  {
+   "rect": {
+    "left": 100,
+    "top": 100,
+    "right": 200,
+    "bottom": 160
+   },
+   "circle": {
+    "x": 150,
+    "y": 130,
+    "r": 66.30951894845299
+   },
+   "side": "below"
+  },
+  {
+   "rect": {
+    "left": 100,
+    "top": 100,
+    "right": 110,
+    "bottom": 110
+   },
+   "circle": {
+    "x": 105,
+    "y": 105,
+    "r": 28
+   },
+   "side": "below"
+  },
+  {
+   "rect": {
+    "left": -50,
+    "top": -50,
+    "right": 50,
+    "bottom": 50
+   },
+   "circle": {
+    "x": 25,
+    "y": 25,
+    "r": 43.35533905932738
+   },
+   "side": "below"
+  },
+  {
+   "rect": {
+    "left": 500,
+    "top": 0,
+    "right": 600,
+    "bottom": 50
+   },
+   "circle": null,
+   "side": "below"
+  },
+  {
+   "rect": {
+    "left": 0,
+    "top": 900,
+    "right": 50,
+    "bottom": 950
+   },
+   "circle": null,
+   "side": "below"
+  },
+  {
+   "rect": {
+    "left": 20,
+    "top": 700,
+    "right": 380,
+    "bottom": 760
+   },
+   "circle": {
+    "x": 200,
+    "y": 730,
+    "r": 190.48287590894657
+   },
+   "side": "above"
+  },
+  {
+   "rect": {
+    "left": 300,
+    "top": 400,
+    "right": 420,
+    "bottom": 500
+   },
+   "circle": {
+    "x": 350,
+    "y": 450,
+    "r": 78.71067811865476
+   },
+   "side": "above"
+  }
+ ],
+ "enabled": [
+  {
+   "raw": "true",
+   "value": true
+  },
+  {
+   "raw": "false",
+   "value": false
+  },
+  {
+   "raw": "yes",
+   "value": null
+  },
+  {
+   "raw": "1",
+   "value": null
+  },
+  {
+   "raw": "TRUE",
+   "value": null
+  },
+  {
+   "raw": "maybe",
+   "value": null
+  },
+  {
+   "raw": "",
+   "value": null
+  }
+ ],
+ "run": [
+  {
+   "action": "enable",
+   "arg": null,
+   "current": "none",
+   "queued": [],
+   "holding": false,
+   "seen": []
+  },
+  {
+   "action": "want",
+   "arg": "welcome",
+   "current": "welcome:0:0",
+   "queued": [
+    "welcome"
+   ],
+   "holding": true,
+   "seen": []
+  },
+  {
+   "action": "want",
+   "arg": "first-share",
+   "current": "welcome:0:0",
+   "queued": [
+    "welcome",
+    "first-share"
+   ],
+   "holding": true,
+   "seen": []
+  },
+  {
+   "action": "want",
+   "arg": "welcome",
+   "current": "welcome:0:0",
+   "queued": [
+    "welcome",
+    "first-share"
+   ],
+   "holding": true,
+   "seen": []
+  },
+  {
+   "action": "next",
+   "arg": null,
+   "current": "welcome:1:0",
+   "queued": [
+    "welcome",
+    "first-share"
+   ],
+   "holding": true,
+   "seen": []
+  },
+  {
+   "action": "screen",
+   "arg": "editor",
+   "current": "first-share:0:1",
+   "queued": [
+    "first-share"
+   ],
+   "holding": true,
+   "seen": []
+  },
+  {
+   "action": "next",
+   "arg": null,
+   "current": "none",
+   "queued": [],
+   "holding": false,
+   "seen": [
+    "first-share"
+   ]
+  },
+  {
+   "action": "skip",
+   "arg": null,
+   "current": "none",
+   "queued": [],
+   "holding": false,
+   "seen": [
+    "first-share"
+   ]
+  },
+  {
+   "action": "want",
+   "arg": "editing",
+   "current": "editing:0:0",
+   "queued": [
+    "editing"
+   ],
+   "holding": true,
+   "seen": [
+    "first-share"
+   ]
+  },
+  {
+   "action": "screen",
+   "arg": "editor",
+   "current": "editing:0:0",
+   "queued": [
+    "editing"
+   ],
+   "holding": true,
+   "seen": [
+    "first-share"
+   ]
+  },
+  {
+   "action": "next",
+   "arg": null,
+   "current": "editing:1:1",
+   "queued": [
+    "editing"
+   ],
+   "holding": true,
+   "seen": [
+    "first-share"
+   ]
+  },
+  {
+   "action": "next",
+   "arg": null,
+   "current": "none",
+   "queued": [],
+   "holding": false,
+   "seen": [
+    "editing",
+    "first-share"
+   ]
+  },
+  {
+   "action": "screen",
+   "arg": "home",
+   "current": "none",
+   "queued": [],
+   "holding": false,
+   "seen": [
+    "editing",
+    "first-share"
+   ]
+  },
+  {
+   "action": "reset",
+   "arg": null,
+   "current": "none",
+   "queued": [],
+   "holding": false,
+   "seen": []
+  },
+  {
+   "action": "want",
+   "arg": "welcome",
+   "current": "welcome:0:0",
+   "queued": [
+    "welcome"
+   ],
+   "holding": true,
+   "seen": []
+  }
+ ]
+}

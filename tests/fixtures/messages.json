@@ -1,0 +1,14 @@
+{
+  "welcome_title": "Welcome",
+  "welcome_menu": "The menu lists everything you can open.",
+  "welcome_search": "Search finds anything by name.",
+  "welcome_profile": "Your profile is here.",
+  "editing_title": "Editing",
+  "editing_save": "Save keeps your changes.",
+  "editing_undo": "Undo takes back the last change.",
+  "share_title": "Sharing",
+  "share_button": "Share sends a copy to a friend.",
+  "tour_next": "Next",
+  "tour_skip": "Skip",
+  "tour_done": "Got it"
+}

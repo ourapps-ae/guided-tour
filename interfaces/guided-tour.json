@@ -1,0 +1,40 @@
+{
+  "id": "guided-tour",
+  "type": "ae/guided-tour",
+  "version": "1.0.0",
+  "description": "Step-by-step lessons that pause play while a player learns. The mechanism (steps, highlighting, pausing, progress kept on the device) is here; what the lessons say and which element each step rings stay with the application.",
+  "lessons": {
+    "format": 1,
+    "lessons": "list of {id (lower-case letters, digits, hyphens), screen? (the screen it belongs to), steps: [{title, text, anchor}]}; title and text are translation keys, anchor names the element to ring (data-guide on the web, tourAnchor on Apple and Android)"
+  },
+  "storage": "progress is one key per lesson (prefix + lesson id, default 'tut.<id>' = '1') and one key for whether the person wants to be guided (default 'beginner': true or false, anything else means not yet asked); the keys are options so an application keeps its own",
+  "operations": {
+    "createTour": { "arguments": ["options:{lessons:LessonSet,storage:{getItem,setItem,removeItem},translate:(key)=>string,keys?:{prefix,enabled},allowed?:()=>boolean}"], "returns": "Tour" },
+    "Tour.enabled": { "arguments": [], "returns": "boolean|null (null: not yet asked)" },
+    "Tour.setEnabled": { "arguments": ["on:boolean"], "returns": "void (off closes what is open)" },
+    "Tour.want": { "arguments": ["lessonId:string"], "returns": "boolean (queued; false if unknown, not guided, already seen or already waiting)" },
+    "Tour.current": { "arguments": [], "returns": "{lessonId,step,count,title,text,anchor,first,last}|null" },
+    "Tour.next": { "arguments": [], "returns": "void (on the last step the lesson ends and is remembered)" },
+    "Tour.skip": { "arguments": [], "returns": "void (ends the lesson on show for good)" },
+    "Tour.screenChanged": { "arguments": ["screen:string"], "returns": "void (drops lessons that belong to another screen, even the one showing, without marking them seen)" },
+    "Tour.reset": { "arguments": [], "returns": "void (every lesson shows again; guidance on)" },
+    "Tour.holding": { "arguments": [], "returns": "boolean (true while a lesson is open: hold play for everyone)" },
+    "Tour.onChange": { "arguments": ["listener:(view|null)=>void"], "returns": "() => void" },
+    "Tour.queued": { "arguments": [], "returns": "string[]" },
+    "validateLessons": { "arguments": ["set:unknown"], "returns": "string[]" },
+    "parseLessons": { "arguments": ["text:string"], "returns": "LessonSet" },
+    "parseEnabled": { "arguments": ["raw:string|null"], "returns": "boolean|null" },
+    "ringFor": { "arguments": ["rect:{left,top,right,bottom}", "viewport:{width,height}"], "returns": "{x,y,r}|null" },
+    "cardSide": { "arguments": ["circle:{x,y,r}|null", "viewportHeight:number"], "returns": "'below'|'above'" },
+    "mountTour": { "arguments": ["options:{tour:Tour,ui:{panel,button},translate,strings?:{next,skip,done},anchorRect?,viewport?,onAction?,parent?}"], "returns": "{destroy():void,element():HTMLElement|null}" }
+  },
+  "requires": {
+    "controls": "panel and button builders for the card (web), Panel and theme (Apple, Android)",
+    "preferences": "where the device's choice to be guided belongs; pass the same storage and keys to the tour, or set it through the tour",
+    "language": "the translation lookup behind `translate` (the language component's lookup over the current messages)"
+  },
+  "native": {
+    "apple": ["TourModel.parseLessons", "Tour(lessons:storage:translate:keys:allowed:)", "TourOverlay", "tourAnchor(_:)", "tourHost(_:buttons:)"],
+    "android": ["LessonsJson.parse", "Tour(lessons, storage, translate, keys, allowed)", "TourOverlay", "Modifier.tourAnchor", "TourHost"]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "format": 1,
+  "lessons": [
+    {
+      "id": "welcome",
+      "screen": "home",
+      "steps": [
+        { "title": "welcome_title", "text": "welcome_menu", "anchor": "menu" },
+        { "title": "welcome_title", "text": "welcome_search", "anchor": "search" },
+        { "title": "welcome_title", "text": "welcome_profile", "anchor": "profile" }
+      ]
+    },
+    {
+      "id": "editing",
+      "screen": "editor",
+      "steps": [
+        { "title": "editing_title", "text": "editing_save", "anchor": "save" },
+        { "title": "editing_title", "text": "editing_undo", "anchor": "undo" }
+      ]
+    },
+    {
+      "id": "first-share",
+      "steps": [
+        { "title": "share_title", "text": "share_button", "anchor": "share" }
+      ]
+    }
+  ]
+}

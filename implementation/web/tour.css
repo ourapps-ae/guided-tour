@@ -1,0 +1,13 @@
+/* Guided tour: a circle of light on the part being explained, the rest dimmed; the card on the other half. Reads the theme's --primary and the controls' panel. */
+.guide { position: fixed; inset: 0; z-index: 2147483647; }
+.guide.nospot { background: rgba(0,0,0,0.65); }
+.gspot { position: fixed; border-radius: 50%; box-shadow: 0 0 0 200vmax rgba(0,0,0,0.65), inset 0 0 0 2px color-mix(in srgb, var(--primary) 85%, transparent); transition: left .25s ease, top .25s ease, width .25s ease, height .25s ease; pointer-events: none; }
+.guide.nospot .gspot { display: none; }
+.gcard { position: fixed; left: 50%; transform: translateX(-50%); width: min(420px, calc(100% - 32px)); background: rgba(38,36,31,0.97); }
+.gcard.below { bottom: max(16px, env(safe-area-inset-bottom)); }
+.gcard.above { top: max(16px, env(safe-area-inset-top)); }
+.gcard .gtext { font-size: 15px; line-height: 1.4; }
+.gpages { display: flex; gap: 6px; justify-content: center; margin-top: 8px; }
+.gpages i { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); display: block; }
+.gpages i.on { background: var(--primary); }
+.gbuttons { margin-top: 12px; gap: 8px; }
