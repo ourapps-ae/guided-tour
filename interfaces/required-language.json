@@ -1,0 +1,271 @@
+{
+  "openrpc": "1.3.2",
+  "info": {
+    "title": "ae/language",
+    "version": "1.0.0",
+    "description": "Language selection and message lookup for every platform, and a generator of platform string resources for English, French, German and Spanish. Web: implementation/web/i18n.ts. Apple: implementation/apple/Sources/Language.swift. Android: package ae.i18n. Generator: implementation/scripts/generate.py."
+  },
+  "methods": [
+    {
+      "name": "selectLanguage",
+      "description": "The requested language when supported, else the part before its first hyphen when supported, else the fallback; case is kept (fr-CA against en, fr gives fr). Web: selectLanguage in web/i18n.ts. Swift: selectLanguage(_:supported:fallback:). Kotlin: ae.i18n.selectLanguage(requested, supported, fallback) and AppLanguage.selectLanguage.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "requested",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "supported",
+          "required": true,
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "fallback",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "language",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "lookup",
+      "description": "The stored text for a key (own keys only; an empty string counts as present), or the key itself. Web: lookup in web/i18n.ts. Swift: lookup(_:key:). Kotlin: ae.i18n.lookup(messages, key) and AppLanguage.lookup.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "messages",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Messages"
+          }
+        },
+        {
+          "name": "key",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "text",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "parseLanguages",
+      "description": "The languages setting as a list, checked: at least one name, none repeated, every name in known. Web only (web/i18n.ts); the generator's parse_languages also requires en.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "setting",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "known",
+          "required": false,
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "en",
+              "fr",
+              "de",
+              "es"
+            ]
+          }
+        }
+      ],
+      "result": {
+        "name": "languages",
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "errors": [
+        {
+          "code": 1,
+          "message": "languages must be distinct names from <known>"
+        }
+      ]
+    },
+    {
+      "name": "generate",
+      "description": "Writes platform resources for the chosen languages from a string table: web strings.json, Apple Localizable.xcstrings and Android values*/strings.xml, with native placeholders numbered in English first-appearance order. Python only: generate(strings, web, apple, android_root, languages) in scripts/generate.py, or its command line --strings --web --apple --android [--languages]. Nothing is written when a check fails.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "strings",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/StringTable"
+          }
+        },
+        {
+          "name": "web",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "description": "Output folder for strings.json."
+          }
+        },
+        {
+          "name": "apple",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "description": "Output folder for Localizable.xcstrings."
+          }
+        },
+        {
+          "name": "android",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "description": "The Android res folder."
+          }
+        },
+        {
+          "name": "languages",
+          "description": "Command line form; the Python function takes a tuple.",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/LanguagesSetting"
+          }
+        }
+      ],
+      "result": {
+        "name": "none",
+        "schema": {
+          "type": "null"
+        },
+        "description": "Nothing is returned."
+      },
+      "errors": [
+        {
+          "code": 2,
+          "message": "languages must be distinct names from en fr de es and include en"
+        },
+        {
+          "code": 3,
+          "message": "string table must be a nonempty object"
+        },
+        {
+          "code": 4,
+          "message": "invalid resource key"
+        },
+        {
+          "code": 5,
+          "message": "each key requires <languages> and no other language than en, fr, de, es"
+        },
+        {
+          "code": 6,
+          "message": "translations must be strings"
+        },
+        {
+          "code": 7,
+          "message": "translation placeholder mismatch: <key>"
+        },
+        {
+          "code": 8,
+          "message": "duplicate string key"
+        }
+      ]
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Language": {
+        "type": "string",
+        "enum": [
+          "en",
+          "fr",
+          "de",
+          "es"
+        ],
+        "description": "A language the generator knows: English, French, German, Spanish."
+      },
+      "LanguagesSetting": {
+        "type": "string",
+        "pattern": "^(?!.*(?:^|\\s)(en|fr|de|es)\\s(?:.*\\s)?\\1(?:\\s|$))(?=.*(?:^|\\s)en(?:\\s|$))\\s*(?:en|fr|de|es)(?:\\s+(?:en|fr|de|es))*\\s*$",
+        "default": "en fr de es",
+        "description": "The languages installer setting: distinct names from en fr de es separated by spaces; en must be listed."
+      },
+      "Messages": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        },
+        "description": "Message key to text in one language; an empty string is present text."
+      },
+      "StringTable": {
+        "type": "object",
+        "minProperties": 1,
+        "propertyNames": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+        },
+        "additionalProperties": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "en"
+          ],
+          "properties": {
+            "en": {
+              "type": "string"
+            },
+            "fr": {
+              "type": "string"
+            },
+            "de": {
+              "type": "string"
+            },
+            "es": {
+              "type": "string"
+            }
+          },
+          "description": "Every chosen language (en always); placeholders are {name} and every language uses the same set."
+        },
+        "description": "The application's string table the generator reads: resource key to its text per language."
+      },
+      "WebStrings": {
+        "type": "object",
+        "propertyNames": {
+          "$ref": "#/components/schemas/Language"
+        },
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Messages"
+        },
+        "description": "The generated web strings.json: language to its messages."
+      }
+    }
+  }
+}

@@ -339,3 +339,29 @@ test("a consumer runs a sample tour without any application", () => {
   tour.next();
   assert.deepEqual([...storage.data.keys()].sort(), ["beginner", "tut.first-share"]);
 });
+
+test("the OpenRPC interface describes the lessons file, the tour and the exported functions", async () => {
+  const doc = JSON.parse(readFileSync(new URL("../interfaces/guided-tour.json", import.meta.url), "utf8"));
+  assert.equal(doc.openrpc, "1.3.2");
+  assert.deepEqual([doc.info.title, doc.info.version], ["ae/guided-tour", "1.0.0"]);
+  const { Lesson, Step, TourKeys, TourView: viewShape } = doc.components.schemas;
+  const id = new RegExp(Lesson.properties.id.pattern), anchor = new RegExp(Step.properties.anchor.pattern);
+  for (const lesson of parseLessons(lessonText).lessons) {
+    assert.match(lesson.id, id);
+    for (const step of lesson.steps) assert.match(step.anchor, anchor);
+  }
+  for (const bad of ["Welcome", "1st", "a b"]) {
+    assert.doesNotMatch(bad, id);
+    assert.ok(validateLessons({ format: 1, lessons: [{ id: bad, steps: [{ title: "t", text: "x", anchor: "a" }] }] }).length > 0, bad);
+  }
+  assert.deepEqual({ prefix: TourKeys.properties.prefix.default, enabled: TourKeys.properties.enabled.default }, DEFAULT_KEYS);
+  const { tour } = setup();
+  tour.want("welcome");
+  assert.deepEqual(Object.keys(tour.current()!).sort(), [...viewShape.required].sort());
+  const web: Record<string, unknown> = { ...(await import("../implementation/web/tour-model.ts")), ...(await import("../implementation/web/tour-view.ts")) };
+  for (const method of doc.methods) {
+    const [owner, member] = method.name.split(".");
+    if (member) assert.equal(typeof (tour as unknown as Record<string, unknown>)[member], "function", method.name);
+    else assert.equal(typeof web[owner], "function", method.name);
+  }
+});

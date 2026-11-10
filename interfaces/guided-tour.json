@@ -1,40 +1,762 @@
 {
-  "id": "guided-tour",
-  "type": "ae/guided-tour",
-  "version": "1.0.0",
-  "description": "Step-by-step lessons that pause play while a player learns. The mechanism (steps, highlighting, pausing, progress kept on the device) is here; what the lessons say and which element each step rings stay with the application.",
-  "lessons": {
-    "format": 1,
-    "lessons": "list of {id (lower-case letters, digits, hyphens), screen? (the screen it belongs to), steps: [{title, text, anchor}]}; title and text are translation keys, anchor names the element to ring (data-guide on the web, tourAnchor on Apple and Android)"
+  "openrpc": "1.3.2",
+  "info": {
+    "title": "ae/guided-tour",
+    "version": "1.0.0",
+    "description": "Step-by-step lessons that pause play while a player learns. The mechanism (steps, highlighting, pausing, progress kept on the device) is here; what the lessons say and which element each step rings stay with the application. Progress is one storage key per lesson (prefix plus lesson id) and one key for whether the person wants to be guided. The card uses the controls component's panel and button, text comes through the language component's lookup, and the storage is where the preferences component keeps the device's choices. Web: implementation/web/tour-model.ts, tour-view.ts and tour.css. Apple: TourModel, Tour, TourOverlay and the tourAnchor and tourHost modifiers. Android: TourModel, LessonsJson, Tour, TourOverlay, TourHost and Modifier.tourAnchor in package ae.tour."
   },
-  "storage": "progress is one key per lesson (prefix + lesson id, default 'tut.<id>' = '1') and one key for whether the person wants to be guided (default 'beginner': true or false, anything else means not yet asked); the keys are options so an application keeps its own",
-  "operations": {
-    "createTour": { "arguments": ["options:{lessons:LessonSet,storage:{getItem,setItem,removeItem},translate:(key)=>string,keys?:{prefix,enabled},allowed?:()=>boolean}"], "returns": "Tour" },
-    "Tour.enabled": { "arguments": [], "returns": "boolean|null (null: not yet asked)" },
-    "Tour.setEnabled": { "arguments": ["on:boolean"], "returns": "void (off closes what is open)" },
-    "Tour.want": { "arguments": ["lessonId:string"], "returns": "boolean (queued; false if unknown, not guided, already seen or already waiting)" },
-    "Tour.current": { "arguments": [], "returns": "{lessonId,step,count,title,text,anchor,first,last}|null" },
-    "Tour.next": { "arguments": [], "returns": "void (on the last step the lesson ends and is remembered)" },
-    "Tour.skip": { "arguments": [], "returns": "void (ends the lesson on show for good)" },
-    "Tour.screenChanged": { "arguments": ["screen:string"], "returns": "void (drops lessons that belong to another screen, even the one showing, without marking them seen)" },
-    "Tour.reset": { "arguments": [], "returns": "void (every lesson shows again; guidance on)" },
-    "Tour.holding": { "arguments": [], "returns": "boolean (true while a lesson is open: hold play for everyone)" },
-    "Tour.onChange": { "arguments": ["listener:(view|null)=>void"], "returns": "() => void" },
-    "Tour.queued": { "arguments": [], "returns": "string[]" },
-    "validateLessons": { "arguments": ["set:unknown"], "returns": "string[]" },
-    "parseLessons": { "arguments": ["text:string"], "returns": "LessonSet" },
-    "parseEnabled": { "arguments": ["raw:string|null"], "returns": "boolean|null" },
-    "ringFor": { "arguments": ["rect:{left,top,right,bottom}", "viewport:{width,height}"], "returns": "{x,y,r}|null" },
-    "cardSide": { "arguments": ["circle:{x,y,r}|null", "viewportHeight:number"], "returns": "'below'|'above'" },
-    "mountTour": { "arguments": ["options:{tour:Tour,ui:{panel,button},translate,strings?:{next,skip,done},anchorRect?,viewport?,onAction?,parent?}"], "returns": "{destroy():void,element():HTMLElement|null}" }
-  },
-  "requires": {
-    "controls": "panel and button builders for the card (web), Panel and theme (Apple, Android)",
-    "preferences": "where the device's choice to be guided belongs; pass the same storage and keys to the tour, or set it through the tour",
-    "language": "the translation lookup behind `translate` (the language component's lookup over the current messages)"
-  },
-  "native": {
-    "apple": ["TourModel.parseLessons", "Tour(lessons:storage:translate:keys:allowed:)", "TourOverlay", "tourAnchor(_:)", "tourHost(_:buttons:)"],
-    "android": ["LessonsJson.parse", "Tour(lessons, storage, translate, keys, allowed)", "TourOverlay", "Modifier.tourAnchor", "TourHost"]
+  "methods": [
+    {
+      "name": "validateLessons",
+      "description": "One message per problem in a lessons file; an empty list means usable. Swift: part of TourModel.parseLessons. Kotlin: TourModel.validate(lessons).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "set",
+          "required": true,
+          "schema": {}
+        }
+      ],
+      "result": {
+        "name": "problems",
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "parseLessons",
+      "description": "Parses and checks lessons text. Swift: TourModel.parseLessons(_: Data) throws TourError.invalid, returning the lessons. Kotlin: LessonsJson.parse(text) throws IllegalArgumentException, returning the lessons.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "text",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "lessons",
+        "schema": {
+          "$ref": "#/components/schemas/LessonSet"
+        }
+      },
+      "errors": [
+        {
+          "code": 2,
+          "message": "lessons are not JSON: <reason>"
+        },
+        {
+          "code": 1,
+          "message": "<problem>; <problem> (the validateLessons messages)"
+        }
+      ]
+    },
+    {
+      "name": "parseEnabled",
+      "description": "true and false as stored; anything else (or null) means not yet asked. Swift: TourModel.parseEnabled(_:). Kotlin: TourModel.parseEnabled(raw).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "raw",
+          "required": true,
+          "schema": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      ],
+      "result": {
+        "name": "enabled",
+        "schema": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      }
+    },
+    {
+      "name": "ringFor",
+      "description": "The circle round an element clipped to the screen (radius at least 28), or null when it is off screen. Swift: TourModel.ring(_:width:height:). Kotlin: TourModel.ring(rect, width, height).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "rect",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Rect"
+          }
+        },
+        {
+          "name": "viewport",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/Viewport"
+          }
+        }
+      ],
+      "result": {
+        "name": "circle",
+        "schema": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/Circle"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "cardSide",
+      "description": "The text card takes the half of the screen the circle is not in; below when there is no circle. Swift: TourModel.cardBelow(_:viewportHeight:) returning a boolean. Kotlin: TourModel.cardBelow(circle, viewportHeight).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "circle",
+          "required": true,
+          "schema": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Circle"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        {
+          "name": "viewportHeight",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "result": {
+        "name": "side",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "below",
+            "above"
+          ]
+        }
+      }
+    },
+    {
+      "name": "createTour",
+      "description": "A tour over the lessons: each lesson shows once ever, one after another; progress and the choice to be guided are kept in storage under keys. Swift: Tour(lessons:storage:translate:keys:allowed:). Kotlin: Tour(lessons, storage, translate, keys, allowed).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "options",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/TourOptions"
+          }
+        }
+      ],
+      "result": {
+        "name": "tour",
+        "schema": {
+          "$ref": "#/components/schemas/Tour"
+        }
+      },
+      "errors": [
+        {
+          "code": 1,
+          "message": "<problem>; <problem> (the validateLessons messages)"
+        }
+      ]
+    },
+    {
+      "name": "Tour.enabled",
+      "description": "Whether the person wants to be guided: true, false, or null if not yet asked. Called on the tour createTour returns. Swift and Kotlin: the enabled property.",
+      "paramStructure": "by-position",
+      "params": [],
+      "result": {
+        "name": "enabled",
+        "schema": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Tour.setEnabled",
+      "description": "Stores the choice; off closes what is open and empties the queue. Called on the tour createTour returns.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "on",
+          "required": true,
+          "schema": {
+            "type": "boolean"
+          }
+        }
+      ],
+      "result": {
+        "name": "none",
+        "schema": {
+          "type": "null"
+        },
+        "description": "Nothing is returned."
+      }
+    },
+    {
+      "name": "Tour.seen",
+      "description": "Whether a lesson has been shown to the end or skipped. Called on the tour createTour returns.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "lessonId",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "seen",
+        "schema": {
+          "type": "boolean"
+        }
+      }
+    },
+    {
+      "name": "Tour.want",
+      "description": "Asks for a lesson: queued after any already waiting; false when unknown, not allowed, not guided, already seen or already waiting. Called on the tour createTour returns.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "lessonId",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "queued",
+        "schema": {
+          "type": "boolean"
+        }
+      }
+    },
+    {
+      "name": "Tour.current",
+      "description": "The step on show, or null. Called on the tour createTour returns. Swift and Kotlin: the current property.",
+      "paramStructure": "by-position",
+      "params": [],
+      "result": {
+        "name": "view",
+        "schema": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/TourView"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Tour.next",
+      "description": "The next step; on the last step the lesson ends and is remembered. Called on the tour createTour returns.",
+      "paramStructure": "by-position",
+      "params": [],
+      "result": {
+        "name": "none",
+        "schema": {
+          "type": "null"
+        },
+        "description": "Nothing is returned."
+      }
+    },
+    {
+      "name": "Tour.skip",
+      "description": "Ends the lesson on show for good. Called on the tour createTour returns.",
+      "paramStructure": "by-position",
+      "params": [],
+      "result": {
+        "name": "none",
+        "schema": {
+          "type": "null"
+        },
+        "description": "Nothing is returned."
+      }
+    },
+    {
+      "name": "Tour.screenChanged",
+      "description": "Drops lessons that belong to another screen, even the one showing, without marking them seen; drops all when not allowed. Called on the tour createTour returns.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "screen",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "none",
+        "schema": {
+          "type": "null"
+        },
+        "description": "Nothing is returned."
+      }
+    },
+    {
+      "name": "Tour.reset",
+      "description": "Every lesson shows again, and guidance is on. Called on the tour createTour returns.",
+      "paramStructure": "by-position",
+      "params": [],
+      "result": {
+        "name": "none",
+        "schema": {
+          "type": "null"
+        },
+        "description": "Nothing is returned."
+      }
+    },
+    {
+      "name": "Tour.holding",
+      "description": "True while a lesson is open: the host holds play for everyone. Called on the tour createTour returns. Swift and Kotlin: the holding property.",
+      "paramStructure": "by-position",
+      "params": [],
+      "result": {
+        "name": "holding",
+        "schema": {
+          "type": "boolean"
+        }
+      }
+    },
+    {
+      "name": "Tour.onChange",
+      "description": "Tells the listener whenever the step on show changes, a lesson opens, or the last one closes; returns a function that removes it. Called on the tour createTour returns.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "listener",
+          "required": true,
+          "schema": {
+            "description": "A function supplied by the caller: (view: TourView | null) => void. It is called, not serialised."
+          }
+        }
+      ],
+      "result": {
+        "name": "remove",
+        "schema": {
+          "description": "A function supplied by the caller: () => void. It is called, not serialised."
+        }
+      }
+    },
+    {
+      "name": "Tour.queued",
+      "description": "Lesson ids waiting, the one on show first. Called on the tour createTour returns. Swift and Kotlin: the queued property.",
+      "paramStructure": "by-position",
+      "params": [],
+      "result": {
+        "name": "ids",
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,47}$"
+          }
+        }
+      }
+    },
+    {
+      "name": "domAnchorRect",
+      "description": "Where the element marked data-guide=\"anchor\" is, or null. Web only; Swift marks elements with .tourAnchor(_:) and Kotlin with Modifier.tourAnchor(name).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "anchor",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,47}$"
+          }
+        }
+      ],
+      "result": {
+        "name": "rect",
+        "schema": {
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/Rect"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "mountTour",
+      "description": "Shows the tour whenever a lesson is open: the screen dimmed except a circle of light round the step's element, and a controls panel on the other half with the heading, the sentence, progress dots and Skip and Next (Got it at the last step); keeps the circle on its element as the page changes. Swift: .tourHost(_:buttons:) with TourOverlay. Kotlin: TourHost(tour, buttons, content) with TourOverlay.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "options",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/MountOptions"
+          }
+        }
+      ],
+      "result": {
+        "name": "mounted",
+        "schema": {
+          "$ref": "#/components/schemas/MountedTour"
+        }
+      }
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Step": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "text",
+          "anchor"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A translation key."
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A translation key."
+          },
+          "anchor": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,47}$",
+            "description": "The element to ring: data-guide on the web, tourAnchor on Apple and Android."
+          }
+        },
+        "description": "Swift and Kotlin: TourStep."
+      },
+      "Lesson": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "steps"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,47}$"
+          },
+          "screen": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9-]{0,47}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The screen it belongs to; it goes when that screen does."
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Step"
+            },
+            "minItems": 1
+          }
+        },
+        "description": "Swift and Kotlin: Lesson."
+      },
+      "LessonSet": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "format",
+          "lessons"
+        ],
+        "properties": {
+          "format": {
+            "const": 1
+          },
+          "lessons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Lesson"
+            },
+            "minItems": 1,
+            "description": "Lesson ids are unique."
+          }
+        },
+        "description": "The application's lessons file. Swift TourModel.parseLessons and Kotlin LessonsJson.parse return the lesson list."
+      },
+      "TourKeys": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "prefix": {
+            "type": "string",
+            "default": "tut.",
+            "description": "Progress key is prefix plus lesson id, holding 1 once seen."
+          },
+          "enabled": {
+            "type": "string",
+            "default": "beginner",
+            "description": "Holds true or false; anything else means not yet asked."
+          }
+        },
+        "description": "Storage keys; DEFAULT_KEYS is tut. and beginner. Swift and Kotlin: TourKeys."
+      },
+      "TourView": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "lessonId",
+          "step",
+          "count",
+          "title",
+          "text",
+          "anchor",
+          "first",
+          "last"
+        ],
+        "properties": {
+          "lessonId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,47}$"
+          },
+          "step": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "title": {
+            "type": "string",
+            "description": "Translated."
+          },
+          "text": {
+            "type": "string",
+            "description": "Translated."
+          },
+          "anchor": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,47}$"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          }
+        },
+        "description": "The step on show. Swift and Kotlin: TourView (first and last computed)."
+      },
+      "Rect": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "left",
+          "top",
+          "right",
+          "bottom"
+        ],
+        "properties": {
+          "left": {
+            "type": "number"
+          },
+          "top": {
+            "type": "number"
+          },
+          "right": {
+            "type": "number"
+          },
+          "bottom": {
+            "type": "number"
+          }
+        },
+        "description": "Viewport pixels. Swift and Kotlin: TourRect."
+      },
+      "Circle": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "x",
+          "y",
+          "r"
+        ],
+        "properties": {
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "r": {
+            "type": "number",
+            "minimum": 28
+          }
+        },
+        "description": "Swift and Kotlin: TourCircle."
+      },
+      "Viewport": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "width",
+          "height"
+        ],
+        "properties": {
+          "width": {
+            "type": "number"
+          },
+          "height": {
+            "type": "number"
+          }
+        }
+      },
+      "Storage": {
+        "type": "object",
+        "description": "Key-value text storage with getItem(key) returning a string or null, setItem(key, value) and removeItem(key), such as localStorage. Swift: TourStorage (UserDefaultsTourStorage, MemoryTourStorage). Kotlin: TourStorage (PreferencesTourStorage, MemoryTourStorage)."
+      },
+      "TourOptions": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "lessons",
+          "storage",
+          "translate"
+        ],
+        "properties": {
+          "lessons": {
+            "$ref": "#/components/schemas/LessonSet"
+          },
+          "storage": {
+            "$ref": "#/components/schemas/Storage"
+          },
+          "translate": {
+            "description": "A function supplied by the caller: (key: string) => string, the language component's lookup over the current messages. It is called, not serialised."
+          },
+          "keys": {
+            "$ref": "#/components/schemas/TourKeys"
+          },
+          "allowed": {
+            "description": "A function supplied by the caller: () => boolean; false for now means no lesson is wanted or kept, such as on a shared display. It is called, not serialised."
+          }
+        }
+      },
+      "Controls": {
+        "type": "object",
+        "description": "The controls component's panel and button builders (web), or anything with the same signatures."
+      },
+      "ButtonStrings": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "next",
+          "skip",
+          "done"
+        ],
+        "properties": {
+          "next": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A translation key."
+          },
+          "skip": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A translation key."
+          },
+          "done": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A translation key."
+          }
+        },
+        "description": "Translation keys of the three buttons; DEFAULT_STRINGS is tour_next, tour_skip, tour_done. Swift and Kotlin: TourButtons holds the translated texts."
+      },
+      "MountOptions": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "tour",
+          "ui",
+          "translate"
+        ],
+        "properties": {
+          "tour": {
+            "$ref": "#/components/schemas/Tour"
+          },
+          "ui": {
+            "$ref": "#/components/schemas/Controls"
+          },
+          "translate": {
+            "description": "A function supplied by the caller: (key: string) => string. It is called, not serialised."
+          },
+          "strings": {
+            "$ref": "#/components/schemas/ButtonStrings"
+          },
+          "anchorRect": {
+            "description": "A function supplied by the caller: (anchor: string) => Rect | null; by default the element marked data-guide=\"anchor\". It is called, not serialised."
+          },
+          "viewport": {
+            "description": "A function supplied by the caller: () => Viewport; the window size by default. It is called, not serialised."
+          },
+          "onAction": {
+            "description": "A function supplied by the caller: (action: 'next' | 'skip' | 'done') => void, such as to play a click. It is called, not serialised."
+          },
+          "parent": {
+            "type": "object",
+            "description": "Where the overlay goes; the page body by default."
+          },
+          "requestFrame": {
+            "description": "A function supplied by the caller: (callback) => number; requestAnimationFrame by default. It is called, not serialised."
+          },
+          "cancelFrame": {
+            "description": "A function supplied by the caller: (id: number) => void; cancelAnimationFrame by default. It is called, not serialised."
+          }
+        }
+      },
+      "Tour": {
+        "type": "object",
+        "description": "The tour createTour returns; its operations are the Tour.* methods."
+      },
+      "MountedTour": {
+        "type": "object",
+        "description": "destroy() removes the overlay and stops following; element() returns the overlay element or null."
+      }
+    }
   }
 }

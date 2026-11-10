@@ -1,0 +1,987 @@
+{
+  "openrpc": "1.3.2",
+  "info": {
+    "title": "ae/controls",
+    "version": "1.0.0",
+    "description": "Buttons, icon buttons, toggles, panels, banners, dialogs and help pages that draw with the theme's tokens. Text is always supplied already translated. Web: implementation/web (DOM elements styled by controls.css from the theme CSS variables). Apple: SwiftUI views in implementation/apple/Sources. Android: Compose functions in package ae.controls."
+  },
+  "methods": [
+    {
+      "name": "h",
+      "description": "Creates an element: class sets className, a style object is assigned, on<Event> functions become listeners, disabled sets the property, other values become attributes; null, undefined and false attributes and children are skipped. Web only.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "tag",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "description": "An HTML tag name."
+          }
+        },
+        {
+          "name": "attrs",
+          "required": false,
+          "schema": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "children",
+          "description": "Passed as the remaining arguments.",
+          "required": false,
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Child"
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "element",
+        "schema": {
+          "$ref": "#/components/schemas/Element"
+        }
+      }
+    },
+    {
+      "name": "buttonClass",
+      "description": "The class list of a text button: btn plus the variant (except primary), block, danger and glow. Web only.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "variant",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/ButtonVariant",
+            "default": "primary"
+          }
+        },
+        {
+          "name": "opts",
+          "required": false,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [],
+            "properties": {
+              "block": {
+                "type": "boolean"
+              },
+              "danger": {
+                "type": "boolean"
+              },
+              "glow": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "className",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "button",
+      "description": "A text button. Web only; Swift uses the platform Button with .controlButtonStyle() (plain, bordered on tvOS) and .pulseHalo(_:), Kotlin a Material Button with Modifier.pulseHalo.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "options",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/ButtonOptions"
+          }
+        }
+      ],
+      "result": {
+        "name": "button",
+        "schema": {
+          "$ref": "#/components/schemas/Element"
+        }
+      }
+    },
+    {
+      "name": "iconButtonClass",
+      "description": "The class list of a round icon button: icbtn plus gold (filled), ghost (outlined) or plain, and glow. Web only.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "variant",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/IconButtonVariant",
+            "default": "outlined"
+          }
+        },
+        {
+          "name": "glow",
+          "required": false,
+          "schema": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      ],
+      "result": {
+        "name": "className",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "iconButton",
+      "description": "A round icon button: filled for the main action, outlined for others, plain for quiet ones; label is the accessible name and tooltip; the halo shows only while enabled. Swift: RoundIconButton(label:enabled:filled:glow:action:glyph:) drawing the glyph in the colour it is given. Kotlin: RoundIconButton(icon, label, enabled, filled, onClick, glow, size, content). Native forms have filled and outlined only.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "options",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/IconButtonOptions"
+          }
+        }
+      ],
+      "result": {
+        "name": "button",
+        "schema": {
+          "$ref": "#/components/schemas/Element"
+        }
+      }
+    },
+    {
+      "name": "toggleView",
+      "description": "What a toggle shows for a state: its class, icon and label. Web only; the native toggles compute the same inside ToggleButton.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "on",
+          "required": true,
+          "schema": {
+            "type": "boolean"
+          }
+        },
+        {
+          "name": "options",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/ToggleLook"
+          }
+        }
+      ],
+      "result": {
+        "name": "view",
+        "schema": {
+          "$ref": "#/components/schemas/ToggleView"
+        }
+      }
+    },
+    {
+      "name": "toggle",
+      "description": "A round on/off switch (microphone, camera, sound); a tap calls onChange with the opposite state; aria-pressed follows on. Swift: ToggleButton(on:onIcon:offIcon:label:enabled:action:) with SF Symbol names. Kotlin: ToggleButton(on, onIcon, offIcon, label, onToggle, enabled) with ImageVectors.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "options",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/ToggleOptions"
+          }
+        }
+      ],
+      "result": {
+        "name": "button",
+        "schema": {
+          "$ref": "#/components/schemas/Element"
+        }
+      }
+    },
+    {
+      "name": "panel",
+      "description": "A rounded panel grouping content; an active panel (primary edge, lighter fill) is where the next tap belongs. Swift: Panel(title:active:content:). Kotlin: Panel(modifier, title, active, content).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "options",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/PanelOptions"
+          }
+        },
+        {
+          "name": "children",
+          "description": "Passed as the remaining arguments.",
+          "required": false,
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Child"
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "element",
+        "schema": {
+          "$ref": "#/components/schemas/Element"
+        }
+      }
+    },
+    {
+      "name": "banner",
+      "description": "The accent instruction line in a slim banner with optional trailing controls (role status). Swift: PromptBanner(_:trailing:). Kotlin: PromptBanner(text, trailing).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "text",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "description": "Already translated text."
+          }
+        },
+        {
+          "name": "trailing",
+          "description": "Passed as the remaining arguments.",
+          "required": false,
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Child"
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "element",
+        "schema": {
+          "$ref": "#/components/schemas/Element"
+        }
+      }
+    },
+    {
+      "name": "dialog",
+      "description": "A modal over the page; Escape and a tap on the dim area close it and onClose runs once. Add the returned element to the page. Web only; Swift and Kotlin use the platform sheet or dialog with Panel inside.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "options",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/DialogOptions"
+          }
+        }
+      ],
+      "result": {
+        "name": "dialog",
+        "schema": {
+          "$ref": "#/components/schemas/DialogHandle"
+        }
+      }
+    },
+    {
+      "name": "normaliseHelpSections",
+      "description": "Trims each section and drops sections with no title and no body. Web only; Swift and Kotlin HelpPage do the same.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "sections",
+          "required": true,
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HelpSection"
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "sections",
+        "schema": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/HelpSection"
+          }
+        }
+      }
+    },
+    {
+      "name": "helpPage",
+      "description": "A scrolling help page: a heading with a close button, titled sections and a footer line. Swift: HelpPage(title:sections:footer:closeLabel:onClose:). Kotlin: HelpPage(title, sections, closeLabel, onClose, footer).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "options",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/HelpPageOptions"
+          }
+        }
+      ],
+      "result": {
+        "name": "element",
+        "schema": {
+          "$ref": "#/components/schemas/Element"
+        }
+      }
+    },
+    {
+      "name": "icon",
+      "description": "An inline SVG icon in currentColor, viewBox 0 0 24 24. Swift: SVGIcon(d: IconPath.<name>) as a Shape. Kotlin: Icon(Icons.Filled.<name>).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "name",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/IconName"
+          }
+        },
+        {
+          "name": "size",
+          "required": false,
+          "schema": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "default": 24
+          }
+        }
+      ],
+      "result": {
+        "name": "svg",
+        "schema": {
+          "$ref": "#/components/schemas/Element"
+        }
+      }
+    },
+    {
+      "name": "badgedIcon",
+      "description": "An icon with a small badge icon (half the size) in its corner, such as a plus on a robot. Swift: BadgedIcon(path:tint:badge:size:). Kotlin: BadgedIcon(icon, badge, tint).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "name",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/IconName"
+          }
+        },
+        {
+          "name": "badge",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/IconName"
+          }
+        },
+        {
+          "name": "size",
+          "required": false,
+          "schema": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "default": 24
+          }
+        }
+      ],
+      "result": {
+        "name": "element",
+        "schema": {
+          "$ref": "#/components/schemas/Element"
+        }
+      }
+    },
+    {
+      "name": "helpBulb",
+      "description": "The corner icon that opens help. Swift: HelpBulb(label:action:). Kotlin: HelpBulb(label, onClick, modifier). Web: iconButton with icon bulb and variant plain.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "label",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "description": "Already translated text."
+          }
+        },
+        {
+          "name": "onClick",
+          "required": true,
+          "schema": {
+            "description": "A function supplied by the caller: () => void. It is called, not serialised."
+          }
+        }
+      ],
+      "result": {
+        "name": "none",
+        "schema": {
+          "type": "null"
+        },
+        "description": "Nothing is returned."
+      }
+    },
+    {
+      "name": "backIcon",
+      "description": "The back glyph: the leave icon turned to point left. Swift and Kotlin only: BackGlyph(tint:) and BackIcon(tint).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "tint",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "description": "A theme colour."
+          }
+        }
+      ],
+      "result": {
+        "name": "none",
+        "schema": {
+          "type": "null"
+        },
+        "description": "Nothing is returned."
+      }
+    },
+    {
+      "name": "pulseHalo",
+      "description": "The pulsing halo on anything the person may tap now. Web: the glow class (GLOW). Swift: .pulseHalo(_:cornerRadius:). Kotlin: Modifier.pulseHalo(active, cornerRadius).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "active",
+          "required": true,
+          "schema": {
+            "type": "boolean"
+          }
+        },
+        {
+          "name": "cornerRadius",
+          "description": "Round when absent.",
+          "required": false,
+          "schema": {
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      ],
+      "result": {
+        "name": "none",
+        "schema": {
+          "type": "null"
+        },
+        "description": "Nothing is returned."
+      }
+    },
+    {
+      "name": "controlsTheme",
+      "description": "Sets the theme the native controls draw with, once near the top of the view tree. Swift: .controlsTheme(_:) (environment value controlsTheme). Kotlin: ControlsTheme(theme, content) and controlsColours(). Web reads the theme CSS variables in THEME_VARIABLES instead.",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "theme",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "description": "A theme ThemeSet (ae/theme Tokens)."
+          }
+        }
+      ],
+      "result": {
+        "name": "none",
+        "schema": {
+          "type": "null"
+        },
+        "description": "Nothing is returned."
+      }
+    },
+    {
+      "name": "phoneColumn",
+      "description": "Keeps lists and forms at a phone's width (560 points) in the middle of a wide screen; on tvOS an optional help button sits under the content. Swift only: .phoneColumn(help:helpLabel:).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "help",
+          "required": false,
+          "schema": {
+            "description": "A function supplied by the caller: () -> Void. It is called, not serialised."
+          }
+        },
+        {
+          "name": "helpLabel",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "default": "",
+            "description": "Already translated text."
+          }
+        }
+      ],
+      "result": {
+        "name": "none",
+        "schema": {
+          "type": "null"
+        },
+        "description": "Nothing is returned."
+      }
+    },
+    {
+      "name": "formatCount",
+      "description": "1,234,567 in every language (en-US grouping). Swift: formatCount(_: Int). Kotlin: formatCount(n: Int).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "n",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "result": {
+        "name": "text",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "mmss",
+      "description": "Minutes and seconds, rounding a part second up and negatives to 0:00: 61000 is 1:01. Swift: mmss(_: Int). Kotlin: mmss(ms: Long).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "ms",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "result": {
+        "name": "text",
+        "schema": {
+          "type": "string",
+          "pattern": "^[0-9]+:[0-5][0-9]$"
+        }
+      }
+    },
+    {
+      "name": "textFor",
+      "description": "A string looked up by name at run time (server keys, error codes), or the fallback when lookup returns null. Kotlin only: textFor(name, fallback, lookup).",
+      "paramStructure": "by-position",
+      "params": [
+        {
+          "name": "name",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "fallback",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "lookup",
+          "required": true,
+          "schema": {
+            "description": "A function supplied by the caller: (name: String) -> String?. It is called, not serialised."
+          }
+        }
+      ],
+      "result": {
+        "name": "text",
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "components": {
+    "schemas": {
+      "IconName": {
+        "type": "string",
+        "enum": [
+          "edit",
+          "login",
+          "logout",
+          "robot",
+          "play",
+          "lock",
+          "plus",
+          "close",
+          "removeCircle",
+          "language",
+          "replay",
+          "bulb",
+          "mic",
+          "micOff",
+          "videocam",
+          "videocamOff",
+          "volumeUp",
+          "volumeOff",
+          "refresh"
+        ],
+        "description": "A Material Design icon (Apache 2.0). Web: ICON_PATHS and ICON_NAMES in icons.ts. Swift: IconPath.<name> and IconPath.all (path data drawn by SVGIcon(d:)). Kotlin: the matching Icons.Filled ImageVector."
+      },
+      "IconPaths": {
+        "type": "object",
+        "propertyNames": {
+          "$ref": "#/components/schemas/IconName"
+        },
+        "additionalProperties": {
+          "type": "string",
+          "description": "SVG path data in a 24 by 24 box."
+        },
+        "description": "ICON_PATHS (web) and IconPath.all (Swift): icon name to path data."
+      },
+      "ButtonVariant": {
+        "type": "string",
+        "enum": [
+          "primary",
+          "ghost",
+          "link"
+        ]
+      },
+      "IconButtonVariant": {
+        "type": "string",
+        "enum": [
+          "filled",
+          "outlined",
+          "plain"
+        ]
+      },
+      "Attrs": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        },
+        "description": "Extra element attributes, such as data-guide."
+      },
+      "HelpSection": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "body"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Already translated text."
+          },
+          "body": {
+            "type": "string",
+            "description": "Already translated text."
+          }
+        }
+      },
+      "ToggleView": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "class",
+          "icon",
+          "label"
+        ],
+        "properties": {
+          "class": {
+            "type": "string",
+            "enum": [
+              "toggle on",
+              "toggle off"
+            ]
+          },
+          "icon": {
+            "$ref": "#/components/schemas/IconName"
+          },
+          "label": {
+            "type": "string"
+          }
+        }
+      },
+      "ThemeVariables": {
+        "const": [
+          "--primary",
+          "--on-primary",
+          "--background",
+          "--surface",
+          "--edge",
+          "--text",
+          "--muted",
+          "--danger",
+          "--good"
+        ],
+        "description": "THEME_VARIABLES: the theme CSS variables controls.css reads; the application applies the theme so they exist on the page."
+      },
+      "Node": {
+        "type": "object",
+        "description": "A DOM Node."
+      },
+      "Element": {
+        "type": "object",
+        "description": "A DOM HTMLElement (HTMLButtonElement for buttons, SVGSVGElement for icons)."
+      },
+      "Child": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/Node"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          },
+          {
+            "const": false
+          }
+        ],
+        "description": "A child of an element; null and false are skipped (undefined too)."
+      },
+      "DialogHandle": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "el",
+          "close"
+        ],
+        "properties": {
+          "el": {
+            "$ref": "#/components/schemas/Element"
+          },
+          "close": {
+            "description": "A function supplied by the caller: () => void, closes once and runs onClose. It is called, not serialised."
+          }
+        }
+      },
+      "ButtonOptions": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "label",
+          "onClick"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Already translated text."
+          },
+          "onClick": {
+            "description": "A function supplied by the caller: () => void. It is called, not serialised."
+          },
+          "variant": {
+            "$ref": "#/components/schemas/ButtonVariant"
+          },
+          "block": {
+            "type": "boolean"
+          },
+          "danger": {
+            "type": "boolean"
+          },
+          "glow": {
+            "type": "boolean"
+          },
+          "disabled": {
+            "type": "boolean"
+          },
+          "attrs": {
+            "$ref": "#/components/schemas/Attrs"
+          }
+        }
+      },
+      "IconButtonOptions": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "label",
+          "onClick"
+        ],
+        "properties": {
+          "icon": {
+            "$ref": "#/components/schemas/IconName"
+          },
+          "content": {
+            "$ref": "#/components/schemas/Node"
+          },
+          "label": {
+            "type": "string",
+            "description": "Accessible name and tooltip, already translated."
+          },
+          "onClick": {
+            "description": "A function supplied by the caller: () => void. It is called, not serialised."
+          },
+          "variant": {
+            "$ref": "#/components/schemas/IconButtonVariant"
+          },
+          "glow": {
+            "type": "boolean",
+            "description": "Shows only while enabled."
+          },
+          "disabled": {
+            "type": "boolean"
+          },
+          "size": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "default": 24
+          },
+          "attrs": {
+            "$ref": "#/components/schemas/Attrs"
+          }
+        }
+      },
+      "ToggleOptions": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "on",
+          "icon",
+          "label",
+          "onChange"
+        ],
+        "properties": {
+          "on": {
+            "type": "boolean"
+          },
+          "icon": {
+            "$ref": "#/components/schemas/IconName"
+          },
+          "iconOff": {
+            "$ref": "#/components/schemas/IconName"
+          },
+          "label": {
+            "type": "string",
+            "description": "Already translated text."
+          },
+          "labelOff": {
+            "type": "string",
+            "description": "Already translated text."
+          },
+          "onChange": {
+            "description": "A function supplied by the caller: (next: boolean) => void, called with the opposite of on. It is called, not serialised."
+          },
+          "disabled": {
+            "type": "boolean"
+          },
+          "attrs": {
+            "$ref": "#/components/schemas/Attrs"
+          }
+        }
+      },
+      "ToggleLook": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "icon",
+          "label"
+        ],
+        "properties": {
+          "icon": {
+            "$ref": "#/components/schemas/IconName"
+          },
+          "iconOff": {
+            "$ref": "#/components/schemas/IconName"
+          },
+          "label": {
+            "type": "string",
+            "description": "Already translated text."
+          },
+          "labelOff": {
+            "type": "string",
+            "description": "Already translated text."
+          }
+        }
+      },
+      "PanelOptions": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Already translated text."
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "className": {
+            "type": "string"
+          },
+          "attrs": {
+            "$ref": "#/components/schemas/Attrs"
+          }
+        }
+      },
+      "DialogOptions": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "body"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Already translated text."
+          },
+          "body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Child"
+            }
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Child"
+            }
+          },
+          "onClose": {
+            "description": "A function supplied by the caller: () => void, runs once. It is called, not serialised."
+          }
+        }
+      },
+      "HelpPageOptions": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "sections",
+          "closeLabel",
+          "onClose"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Already translated text."
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HelpSection"
+            }
+          },
+          "footer": {
+            "type": "string",
+            "description": "Already translated text."
+          },
+          "closeLabel": {
+            "type": "string",
+            "description": "Already translated text."
+          },
+          "onClose": {
+            "description": "A function supplied by the caller: () => void. It is called, not serialised."
+          }
+        }
+      }
+    }
+  }
+}

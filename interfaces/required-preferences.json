@@ -1,0 +1,618 @@
+{
+  "openrpc": "1.3.2",
+  "info": {
+    "title": "ae/preferences",
+    "version": "1.0.0",
+    "description": "What a person chose on this device: language, sound, camera and microphone, kept on the device only. TypeScript (web/preferences.ts, tagged typescript) over string storage; Swift final class DevicePreferences over UserDefaults (PreferenceStorage) and Kotlin class ae.preferences.DevicePreferences over SharedPreferences (PreferenceStorage), with Bool values, tagged swift and kotlin. The native classes expose the six preferences as read-write properties (DevicePreferences.<name>) and call didChange(name) after each change.",
+    "license": {
+      "name": "Apache-2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "methods": [
+    {
+      "name": "createPreferences",
+      "description": "The preference store over the storage.",
+      "params": [
+        {
+          "name": "storage",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/KeyValueStorage"
+          }
+        },
+        {
+          "name": "defaults",
+          "description": "Defaults to all true.",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/PreferenceDefaults"
+          }
+        },
+        {
+          "name": "keys",
+          "description": "Defaults to DEFAULT_KEYS.",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/PreferenceKeys"
+          }
+        }
+      ],
+      "result": {
+        "name": "store",
+        "schema": {
+          "$ref": "#/components/schemas/PreferenceStore"
+        }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "PreferenceStore.get",
+      "description": "The stored value, or the default (booleans) or null (the rest).",
+      "params": [
+        {
+          "name": "name",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/PreferenceName"
+          }
+        }
+      ],
+      "result": {
+        "name": "value",
+        "schema": {
+          "$ref": "#/components/schemas/PreferenceValue"
+        }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "PreferenceStore.set",
+      "description": "Stores the value (null or empty removes a text preference) and tells every listener.",
+      "params": [
+        {
+          "name": "name",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/PreferenceName"
+          }
+        },
+        {
+          "name": "value",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/PreferenceValue"
+          }
+        }
+      ],
+      "result": {
+        "name": "none",
+        "description": "Returns nothing.",
+        "schema": {
+          "type": "null"
+        }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "PreferenceStore.all",
+      "description": "Every preference.",
+      "params": [],
+      "result": {
+        "name": "preferences",
+        "schema": {
+          "$ref": "#/components/schemas/Preferences"
+        }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "PreferenceStore.reset",
+      "description": "Forgets every choice and tells the listeners about each.",
+      "params": [],
+      "result": {
+        "name": "none",
+        "description": "Returns nothing.",
+        "schema": {
+          "type": "null"
+        }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "PreferenceStore.subscribe",
+      "description": "Adds a listener; returns a function () => void that removes it.",
+      "params": [
+        {
+          "name": "listener",
+          "required": true,
+          "schema": {
+            "description": "Function (name: PreferenceName, value) => void."
+          }
+        }
+      ],
+      "result": {
+        "name": "unsubscribe",
+        "schema": {
+          "description": "Function () => void."
+        }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "availableDeviceId",
+      "description": "The selected device when still available, else empty for automatic. Swift: DevicePreferences.availableDeviceId(_:among:).",
+      "params": [
+        {
+          "name": "selected",
+          "required": true,
+          "schema": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        {
+          "name": "available",
+          "required": true,
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      ],
+      "result": {
+        "name": "deviceId",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        },
+        {
+          "name": "swift"
+        },
+        {
+          "name": "kotlin"
+        }
+      ]
+    },
+    {
+      "name": "exportAll",
+      "description": "One JSON record per line ({name, value}, ae/preference-record 1.0.0) for each choice that was made; defaults are not written.",
+      "params": [
+        {
+          "name": "storage",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/KeyValueStorage"
+          }
+        },
+        {
+          "name": "keys",
+          "description": "Defaults to DEFAULT_KEYS.",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/PreferenceKeys"
+          }
+        }
+      ],
+      "result": {
+        "name": "ndjson",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "importAll",
+      "description": "Stores each valid record and lists the lines that were not.",
+      "params": [
+        {
+          "name": "storage",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/KeyValueStorage"
+          }
+        },
+        {
+          "name": "text",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "keys",
+          "description": "Defaults to DEFAULT_KEYS.",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/PreferenceKeys"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "$ref": "#/components/schemas/ImportResult"
+        }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
+    },
+    {
+      "name": "DevicePreferences.init",
+      "description": "Swift DevicePreferences(storage:defaults:keys:) (storage defaults to UserDefaults.standard); Kotlin DevicePreferences(storage, defaults, keys).",
+      "params": [
+        {
+          "name": "storage",
+          "required": true,
+          "schema": {
+            "description": "PreferenceStorage: Swift object(forKey:), set(_:forKey:), removeObject(forKey:); Kotlin getString, getBoolean, putString, putBoolean, remove."
+          }
+        },
+        {
+          "name": "defaults",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/PreferenceDefaults"
+          }
+        },
+        {
+          "name": "keys",
+          "required": false,
+          "schema": {
+            "$ref": "#/components/schemas/PreferenceKeys"
+          }
+        }
+      ],
+      "result": {
+        "name": "preferences",
+        "schema": {
+          "description": "DevicePreferences."
+        }
+      },
+      "tags": [
+        {
+          "name": "swift"
+        },
+        {
+          "name": "kotlin"
+        }
+      ]
+    },
+    {
+      "name": "DevicePreferences.reset",
+      "description": "Forgets every choice and calls didChange for each.",
+      "params": [],
+      "result": {
+        "name": "none",
+        "description": "Returns nothing.",
+        "schema": {
+          "type": "null"
+        }
+      },
+      "tags": [
+        {
+          "name": "swift"
+        },
+        {
+          "name": "kotlin"
+        }
+      ]
+    },
+    {
+      "name": "DevicePreferences.didChange",
+      "description": "The callback (name: String) -> Void the class calls with the preference's name after each change; assign it.",
+      "params": [
+        {
+          "name": "name",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/PreferenceName"
+          }
+        }
+      ],
+      "result": {
+        "name": "none",
+        "description": "Returns nothing.",
+        "schema": {
+          "type": "null"
+        }
+      },
+      "tags": [
+        {
+          "name": "swift"
+        },
+        {
+          "name": "kotlin"
+        }
+      ]
+    }
+  ],
+  "components": {
+    "schemas": {
+      "PreferenceName": {
+        "type": "string",
+        "enum": [
+          "language",
+          "sound",
+          "microphoneOn",
+          "cameraOn",
+          "cameraDeviceId",
+          "microphoneDeviceId"
+        ]
+      },
+      "Preferences": {
+        "type": "object",
+        "properties": {
+          "language": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "A language code the person picked, or null to follow the device."
+          },
+          "sound": {
+            "type": "boolean"
+          },
+          "microphoneOn": {
+            "type": "boolean"
+          },
+          "cameraOn": {
+            "type": "boolean"
+          },
+          "cameraDeviceId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "A chosen camera id, or null for automatic."
+          },
+          "microphoneDeviceId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "A chosen microphone id, or null for automatic."
+          }
+        },
+        "required": [
+          "language",
+          "sound",
+          "microphoneOn",
+          "cameraOn",
+          "cameraDeviceId",
+          "microphoneDeviceId"
+        ],
+        "additionalProperties": false
+      },
+      "PreferenceValue": {
+        "anyOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "string",
+            "minLength": 1
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "description": "A boolean for sound, microphoneOn and cameraOn; a string or null for the rest."
+      },
+      "PreferenceDefaults": {
+        "type": "object",
+        "properties": {
+          "sound": {
+            "type": "boolean",
+            "description": "Defaults to true."
+          },
+          "microphoneOn": {
+            "type": "boolean",
+            "description": "Defaults to true."
+          },
+          "cameraOn": {
+            "type": "boolean",
+            "description": "Defaults to true."
+          }
+        },
+        "required": [
+          "sound",
+          "microphoneOn",
+          "cameraOn"
+        ],
+        "additionalProperties": false
+      },
+      "PreferenceKeys": {
+        "type": "object",
+        "properties": {
+          "language": {
+            "type": "string"
+          },
+          "sound": {
+            "type": "string"
+          },
+          "microphoneOn": {
+            "type": "string"
+          },
+          "cameraOn": {
+            "type": "string"
+          },
+          "cameraDeviceId": {
+            "type": "string"
+          },
+          "microphoneDeviceId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "language",
+          "sound",
+          "microphoneOn",
+          "cameraOn",
+          "cameraDeviceId",
+          "microphoneDeviceId"
+        ],
+        "additionalProperties": false,
+        "description": "Storage key per preference; defaults lang, sound, micOn, camOn, cameraDeviceID, microphoneDeviceID."
+      },
+      "KeyValueStorage": {
+        "type": "object",
+        "description": "localStorage or anything with the same three functions. Booleans are stored as on and off; only off turns a choice off.",
+        "required": [
+          "getItem",
+          "setItem",
+          "removeItem"
+        ],
+        "properties": {
+          "getItem": {
+            "description": "Function (key: string) => string | null."
+          },
+          "setItem": {
+            "description": "Function (key: string, value: string) => void."
+          },
+          "removeItem": {
+            "description": "Function (key: string) => void."
+          }
+        }
+      },
+      "PreferenceStore": {
+        "type": "object",
+        "description": "createPreferences's object; the functions are listed as PreferenceStore.* methods.",
+        "required": [
+          "get",
+          "set",
+          "all",
+          "reset",
+          "subscribe"
+        ],
+        "properties": {
+          "get": {
+            "description": "Function PreferenceStore.get."
+          },
+          "set": {
+            "description": "Function PreferenceStore.set."
+          },
+          "all": {
+            "description": "Function PreferenceStore.all."
+          },
+          "reset": {
+            "description": "Function PreferenceStore.reset."
+          },
+          "subscribe": {
+            "description": "Function PreferenceStore.subscribe."
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImportResult": {
+        "type": "object",
+        "properties": {
+          "imported": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "rejected": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Lines that were not valid records."
+          }
+        },
+        "required": [
+          "imported",
+          "rejected"
+        ],
+        "additionalProperties": false
+      },
+      "PreferenceRecord": {
+        "$comment": "Same shape as ae/preference-record 1.0.0 (interfaces/preference-record.schema.json).",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "sound",
+                  "microphoneOn",
+                  "cameraOn"
+                ]
+              },
+              "value": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "name",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "language",
+                  "cameraDeviceId",
+                  "microphoneDeviceId"
+                ]
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "name",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  }
+}
