@@ -1,6 +1,6 @@
 # Source mapping
 
-Reference revision: `19905b75dbea89fbfd424d67fe26c81aaed0e018`. Extracted from `OurPoker/recipe/` (read-only); line ranges are of the files there.
+Reference revision: `19905b75dbea89fbfd424d67fe26c81aaed0e018`. Extracted from the `recipe/` folder of `ourapps-ae/OurPoker`; paths and line ranges are of the files there.
 
 ## Mechanism and content
 

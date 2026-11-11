@@ -21,7 +21,7 @@ No installer settings. The application supplies a lessons file (`{ "format": 1, 
 - `implementation/web/tour.css` -> `components/guided-tour/web/tour.css`
 
 Dependencies: none.
-`tools.lock.json` pins verification tools: node 26.5.0, python3 3.12.8, swiftc 6.4.2, kotlinc 2.2.0, java 26.0.1. Licence wording remains deferred.
+`tools.lock.json` pins verification tools: node 26.5, python3 3.12, swiftc 6.4, kotlinc 2.2, java 26.0. Licence wording remains deferred.
 
 ## Provided interfaces
 - `interfaces/guided-tour.json` defines `guided-tour` (ae/guided-tour) version 1.0.0 as an OpenRPC 1.3.2 document: one method per web function and per operation of the tour `createTour` returns (`Tour.want` and so on), each description naming the Swift and Kotlin form, with the lessons file, storage keys, the step on show and the ring geometry as JSON Schema 2020-12 under `components.schemas`. Storage, translation lookups, the controls builders and DOM nodes are described as host values, not serialised.
@@ -43,9 +43,9 @@ None. Local drawing and device storage only; no accounts, network or deployment.
 ## Verification
 Node tests check lesson validation (every fault), the choice to be guided (unasked, true, false, and nothing shown until true), a lesson running step by step and being remembered when it ends, skip, lessons waiting their turn and not being asked for twice, leaving a screen dropping its lessons even the one showing without marking them seen, the host forbidding the tour, reset, other storage keys, missing messages showing their key, the circle round an element clipped to the screen and which half the card takes, and the overlay itself against a stand-in page: the ring and card placement, following a moving element, staying last on the page, buttons driving the tour and reporting their action, and removal on destroy; and that the OpenRPC interface's id and anchor patterns agree with the validator, its keys match the defaults, its step shape matches the tour's, and every method it lists is an exported web function or tour operation. When the controls component is installed next to it, its real `panel` and `button` are also used to build the card. The Apple check compiles and runs `tests/apple/main.swift` for macOS, refusing faulty lesson files and replaying a 15 step script and 7 ring geometries identical to the TypeScript output, then type-checks the Swift (with the theme and controls Swift) for the iOS simulator. The Android check replays the same script (`tests/android/Expected.kt`); kotlinc was not available where this was written, so it has not been run, and `TourOverlay.kt`, `LessonsJson.kt` need the Android and Compose libraries and are compiled by the application's Gradle build. Pixels are not compared.
 
-- `node --test tests/web.test.ts` (web, required-local; tools: node 26.5.0)
-- `python3 tests/native.py apple` (apple, platform; tools: python3 3.12.8, swiftc 6.4.2)
-- `python3 tests/native.py android` (android, platform; tools: python3 3.12.8, kotlinc 2.2.0, java 26.0.1)
+- `node --test tests/web.test.ts` (web, required-local; tools: node 26.5)
+- `python3 tests/native.py apple` (apple, platform; tools: python3 3.12, swiftc 6.4)
+- `python3 tests/native.py android` (android, platform; tools: python3 3.12, kotlinc 2.2, java 26.0)
 
 ## Scenarios and presentation
 On first use the application asks whether the person is a beginner; yes turns guidance on and the home lesson shows its steps one at a time, each ringing a different button, until Got it; the same lesson never shows again. At a table the first time something happens (a first bet, the first community cards) a short lesson opens, play is held for everyone while it is open, and it goes if the person leaves the screen. A "reset hints" button calls `reset` and every lesson shows again.
