@@ -1,6 +1,6 @@
 {
   "name": "guided-tour",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "title": "Guided tour",
   "description": "Step-by-step lessons that pause play while a player learns: steps, highlighting, pausing and progress kept on the device, with the lesson content supplied by the application.",
   "facilities": [
