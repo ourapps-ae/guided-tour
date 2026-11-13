@@ -199,9 +199,6 @@
           "name": "typescript"
         },
         {
-          "name": "swift"
-        },
-        {
           "name": "kotlin"
         }
       ]
@@ -614,5 +611,10 @@
         ]
       }
     }
+  },
+  "x-ourapps-modules": {
+    "web": "web/index.ts",
+    "android": "android/src/main/java",
+    "apple": "apple/Sources"
   }
 }

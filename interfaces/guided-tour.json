@@ -25,7 +25,12 @@
             "type": "string"
           }
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "parseLessons",
@@ -55,6 +60,11 @@
           "code": 1,
           "message": "<problem>; <problem> (the validateLessons messages)"
         }
+      ],
+      "tags": [
+        {
+          "name": "typescript"
+        }
       ]
     },
     {
@@ -81,7 +91,12 @@
             "null"
           ]
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "ringFor",
@@ -115,7 +130,12 @@
             }
           ]
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "cardSide",
@@ -153,7 +173,12 @@
             "above"
           ]
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "createTour",
@@ -179,6 +204,11 @@
           "code": 1,
           "message": "<problem>; <problem> (the validateLessons messages)"
         }
+      ],
+      "tags": [
+        {
+          "name": "typescript"
+        }
       ]
     },
     {
@@ -194,7 +224,12 @@
             "null"
           ]
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "Tour.setEnabled",
@@ -215,7 +250,12 @@
           "type": "null"
         },
         "description": "Nothing is returned."
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "Tour.seen",
@@ -235,7 +275,12 @@
         "schema": {
           "type": "boolean"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "Tour.want",
@@ -255,7 +300,12 @@
         "schema": {
           "type": "boolean"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "Tour.current",
@@ -274,7 +324,12 @@
             }
           ]
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "Tour.next",
@@ -287,7 +342,12 @@
           "type": "null"
         },
         "description": "Nothing is returned."
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "Tour.skip",
@@ -300,7 +360,12 @@
           "type": "null"
         },
         "description": "Nothing is returned."
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "Tour.screenChanged",
@@ -321,7 +386,12 @@
           "type": "null"
         },
         "description": "Nothing is returned."
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "Tour.reset",
@@ -334,7 +404,12 @@
           "type": "null"
         },
         "description": "Nothing is returned."
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "Tour.holding",
@@ -346,7 +421,12 @@
         "schema": {
           "type": "boolean"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "Tour.onChange",
@@ -366,7 +446,12 @@
         "schema": {
           "description": "A function supplied by the caller: () => void. It is called, not serialised."
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "Tour.queued",
@@ -382,7 +467,12 @@
             "pattern": "^[a-z][a-z0-9-]{0,47}$"
           }
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "domAnchorRect",
@@ -410,7 +500,12 @@
             }
           ]
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "mountTour",
@@ -430,7 +525,12 @@
         "schema": {
           "$ref": "#/components/schemas/MountedTour"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     }
   ],
   "components": {
@@ -758,5 +858,10 @@
         "description": "destroy() removes the overlay and stops following; element() returns the overlay element or null."
       }
     }
+  },
+  "x-ourapps-modules": {
+    "web": "web/index.ts",
+    "android": "android/src/main/java",
+    "apple": "apple/Sources"
   }
 }

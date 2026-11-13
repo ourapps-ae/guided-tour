@@ -31,6 +31,12 @@
       "template": false
     },
     {
+      "destination": "components/guided-tour/web/index.ts",
+      "executable": false,
+      "source": "implementation/web/index.ts",
+      "template": false
+    },
+    {
       "destination": "components/guided-tour/web/tour-model.ts",
       "executable": false,
       "source": "implementation/web/tour-model.ts",
@@ -58,6 +64,7 @@
       "components/guided-tour/android/src/main/java/ae/tour/TourOverlay.kt",
       "components/guided-tour/apple/Sources/TourModel.swift",
       "components/guided-tour/apple/Sources/TourOverlay.swift",
+      "components/guided-tour/web/index.ts",
       "components/guided-tour/web/tour-model.ts",
       "components/guided-tour/web/tour-view.ts",
       "components/guided-tour/web/tour.css"
@@ -129,6 +136,10 @@
     {
       "executable": false,
       "path": "implementation/apple/Sources/TourOverlay.swift"
+    },
+    {
+      "executable": false,
+      "path": "implementation/web/index.ts"
     },
     {
       "executable": false,

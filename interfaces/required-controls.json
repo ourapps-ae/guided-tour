@@ -43,7 +43,12 @@
         "schema": {
           "$ref": "#/components/schemas/Element"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "buttonClass",
@@ -84,7 +89,12 @@
         "schema": {
           "type": "string"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "button",
@@ -104,7 +114,12 @@
         "schema": {
           "$ref": "#/components/schemas/Element"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "iconButtonClass",
@@ -133,7 +148,12 @@
         "schema": {
           "type": "string"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "iconButton",
@@ -153,7 +173,12 @@
         "schema": {
           "$ref": "#/components/schemas/Element"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "toggleView",
@@ -180,7 +205,12 @@
         "schema": {
           "$ref": "#/components/schemas/ToggleView"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "toggle",
@@ -200,7 +230,12 @@
         "schema": {
           "$ref": "#/components/schemas/Element"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "panel",
@@ -231,7 +266,12 @@
         "schema": {
           "$ref": "#/components/schemas/Element"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "banner",
@@ -263,7 +303,12 @@
         "schema": {
           "$ref": "#/components/schemas/Element"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "dialog",
@@ -283,7 +328,12 @@
         "schema": {
           "$ref": "#/components/schemas/DialogHandle"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "normaliseHelpSections",
@@ -309,7 +359,12 @@
             "$ref": "#/components/schemas/HelpSection"
           }
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "helpPage",
@@ -329,7 +384,12 @@
         "schema": {
           "$ref": "#/components/schemas/Element"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "icon",
@@ -358,7 +418,12 @@
         "schema": {
           "$ref": "#/components/schemas/Element"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "badgedIcon",
@@ -394,7 +459,12 @@
         "schema": {
           "$ref": "#/components/schemas/Element"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "helpBulb",
@@ -547,7 +617,12 @@
         "schema": {
           "type": "string"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "mmss",
@@ -568,7 +643,12 @@
           "type": "string",
           "pattern": "^[0-9]+:[0-5][0-9]$"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "textFor",
@@ -983,5 +1063,10 @@
         }
       }
     }
+  },
+  "x-ourapps-modules": {
+    "web": "web/index.ts",
+    "android": "android/src/main/java",
+    "apple": "apple/Sources"
   }
 }

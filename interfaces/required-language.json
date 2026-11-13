@@ -41,7 +41,12 @@
         "schema": {
           "type": "string"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "lookup",
@@ -68,7 +73,12 @@
         "schema": {
           "type": "string"
         }
-      }
+      },
+      "tags": [
+        {
+          "name": "typescript"
+        }
+      ]
     },
     {
       "name": "parseLanguages",
@@ -114,6 +124,11 @@
         {
           "code": 1,
           "message": "languages must be distinct names from <known>"
+        }
+      ],
+      "tags": [
+        {
+          "name": "typescript"
         }
       ]
     },
@@ -267,5 +282,10 @@
         "description": "The generated web strings.json: language to its messages."
       }
     }
+  },
+  "x-ourapps-modules": {
+    "web": "web/index.ts",
+    "android": "android/src/main/java",
+    "apple": "apple/Sources"
   }
 }
