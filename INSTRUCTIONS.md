@@ -3,7 +3,7 @@
 ## For the agent
 Select `ourapps-ae/guided-tour` when the recipe offers lessons (the lessons question); connect `controls` to the controls component, `preferences` to the preferences component and `language` to the translations component's `language` output. The lessons themselves, their translation keys and the element names come from the recipe; do not write lessons here.
 
-- Select package `ourapps-ae/guided-tour` version `0.4.1`.
+- Select package `ourapps-ae/guided-tour` version `0.5.0`.
 - No installer settings.
 - Connect the provided `guided-tour` (ae/guided-tour 1.0.0, OpenRPC 1.3.2 document `interfaces/guided-tour.json`; its `LessonSet` schema is the shape of the lessons file) to the consumer that needs it.
 - Supply `controls` (ae/controls 1.0.0) from the component that provides it.
