@@ -1,6 +1,6 @@
 {
   "name": "guided-tour",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "title": "Guided tour",
   "description": "Step-by-step lessons that pause play while a player learns: steps, highlighting, pausing and progress kept on the device, with the lesson content supplied by the application.",
   "facilities": [
@@ -61,7 +61,20 @@
       ],
       "scope": "platform",
       "fixtures": [
-        "tests/apple/main.swift"
+        "tests/apple/main.swift",
+        "tests/apple/controls/ControlsStyle.swift",
+        "tests/apple/controls/Format.swift",
+        "tests/apple/controls/HelpPage.swift",
+        "tests/apple/controls/IconButtons.swift",
+        "tests/apple/controls/IconPaths.swift",
+        "tests/apple/controls/Panels.swift",
+        "tests/apple/controls/PulseHalo.swift",
+        "tests/apple/controls/SVGIcon.swift",
+        "tests/apple/controls/SVGPath.swift",
+        "tests/apple/theme/BackgroundMath.swift",
+        "tests/apple/theme/ThemeBackgroundView.swift",
+        "tests/apple/theme/ThemeTokens.swift",
+        "tests/apple/theme/ThemeTypes.swift"
       ],
       "tools": {
         "python3": "3.12.8",
@@ -328,5 +341,213 @@
     "web": "web/index.ts",
     "android": "android/src/main/java",
     "apple": "apple/Sources"
+  },
+  "toolchains": {
+    "android": [
+      {
+        "name": "java",
+        "versionRange": ">=17.0.0 <27.0.0",
+        "probe": [
+          "java",
+          "-version"
+        ],
+        "install": {
+          "macos": [
+            "brew",
+            "install",
+            "--cask",
+            "temurin"
+          ],
+          "windows": [
+            "winget",
+            "install",
+            "--exact",
+            "--id",
+            "EclipseAdoptium.Temurin.21.JDK"
+          ],
+          "linux": [
+            "sudo",
+            "apt-get",
+            "install",
+            "--yes",
+            "openjdk-21-jdk"
+          ]
+        },
+        "manual": null
+      },
+      {
+        "name": "sdkmanager",
+        "versionRange": ">=22.0.0 <23.0.0",
+        "probe": [
+          "sdkmanager",
+          "--version"
+        ],
+        "install": {
+          "macos": [
+            "brew",
+            "install",
+            "--cask",
+            "android-commandlinetools"
+          ],
+          "windows": null,
+          "linux": null
+        },
+        "manual": "Install the Android command-line tools 22.0 (version 23 replaces sdkmanager): on Windows and Linux unpack https://dl.google.com/android/repository/commandlinetools-win-15859902_latest.zip (linux in place of win) as cmdline-tools/latest in the SDK folder and put its bin folder on PATH. Set ANDROID_HOME to the SDK folder, then run sdkmanager --licenses, accept every licence, and run sdkmanager \"platform-tools\" \"platforms;android-36\" \"build-tools;36.0.0\"."
+      }
+    ],
+    "ios": [
+      {
+        "name": "xcodebuild",
+        "versionRange": ">=27.0.0 <28.0.0",
+        "probe": [
+          "xcodebuild",
+          "-version"
+        ],
+        "install": {
+          "macos": null,
+          "windows": null,
+          "linux": null
+        },
+        "manual": "Apple targets build only on macOS. Install Xcode 27 from the Mac App Store, open it once, accept the licence and install the iOS and tvOS simulator platforms it offers."
+      },
+      {
+        "name": "xcodegen",
+        "versionRange": ">=2.46.0 <3.0.0",
+        "probe": [
+          "xcodegen",
+          "--version"
+        ],
+        "install": {
+          "macos": [
+            "brew",
+            "install",
+            "xcodegen"
+          ],
+          "windows": null,
+          "linux": null
+        },
+        "manual": null
+      }
+    ],
+    "macos": [
+      {
+        "name": "xcodebuild",
+        "versionRange": ">=27.0.0 <28.0.0",
+        "probe": [
+          "xcodebuild",
+          "-version"
+        ],
+        "install": {
+          "macos": null,
+          "windows": null,
+          "linux": null
+        },
+        "manual": "Apple targets build only on macOS. Install Xcode 27 from the Mac App Store, open it once, accept the licence and install the iOS and tvOS simulator platforms it offers."
+      },
+      {
+        "name": "xcodegen",
+        "versionRange": ">=2.46.0 <3.0.0",
+        "probe": [
+          "xcodegen",
+          "--version"
+        ],
+        "install": {
+          "macos": [
+            "brew",
+            "install",
+            "xcodegen"
+          ],
+          "windows": null,
+          "linux": null
+        },
+        "manual": null
+      }
+    ],
+    "tvos": [
+      {
+        "name": "xcodebuild",
+        "versionRange": ">=27.0.0 <28.0.0",
+        "probe": [
+          "xcodebuild",
+          "-version"
+        ],
+        "install": {
+          "macos": null,
+          "windows": null,
+          "linux": null
+        },
+        "manual": "Apple targets build only on macOS. Install Xcode 27 from the Mac App Store, open it once, accept the licence and install the iOS and tvOS simulator platforms it offers."
+      },
+      {
+        "name": "xcodegen",
+        "versionRange": ">=2.46.0 <3.0.0",
+        "probe": [
+          "xcodegen",
+          "--version"
+        ],
+        "install": {
+          "macos": [
+            "brew",
+            "install",
+            "xcodegen"
+          ],
+          "windows": null,
+          "linux": null
+        },
+        "manual": null
+      }
+    ],
+    "web": [
+      {
+        "name": "node",
+        "versionRange": ">=26.5.0 <27.0.0",
+        "probe": [
+          "node",
+          "--version"
+        ],
+        "install": {
+          "macos": [
+            "brew",
+            "install",
+            "node"
+          ],
+          "windows": [
+            "winget",
+            "install",
+            "--exact",
+            "--id",
+            "OpenJS.NodeJS"
+          ],
+          "linux": null
+        },
+        "manual": "Without the package manager, install Node 26 from nodejs.org (the installer, or the zip or tar archive with its folder put first on PATH); on Linux also from the NodeSource repository."
+      }
+    ],
+    "windows": [
+      {
+        "name": "node",
+        "versionRange": ">=26.5.0 <27.0.0",
+        "probe": [
+          "node",
+          "--version"
+        ],
+        "install": {
+          "macos": [
+            "brew",
+            "install",
+            "node"
+          ],
+          "windows": [
+            "winget",
+            "install",
+            "--exact",
+            "--id",
+            "OpenJS.NodeJS"
+          ],
+          "linux": null
+        },
+        "manual": "Without the package manager, install Node 26 from nodejs.org (the installer, or the zip or tar archive with its folder put first on PATH); on Linux also from the NodeSource repository."
+      }
+    ]
   }
 }
