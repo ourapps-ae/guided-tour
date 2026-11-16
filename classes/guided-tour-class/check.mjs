@@ -1,0 +1,18 @@
+import { assert, load } from './runtime.mjs';
+const m = await load('web/index.ts');
+const values = new Map();
+const storage = { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) };
+const lessons = { format: 1, lessons: [{ id: 'intro', steps: [{ title: 'heading', text: 'body', anchor: 'start' }] }] };
+const tour = m.createTour({ lessons, storage, translate: key => 'translated:' + key });
+tour.setEnabled(true);
+assert.equal(tour.want('intro'), true);
+assert.equal(tour.holding(), true);
+assert.equal(tour.current().title, 'translated:heading');
+tour.next();
+assert.equal(tour.holding(), false);
+assert.equal(tour.seen('intro'), true);
+assert.equal(tour.want('intro'), false);
+tour.reset();
+assert.equal(tour.seen('intro'), false);
+assert.equal(m.ringFor({ left: 200, right: 300, top: 0, bottom: 10 }, { width: 100, height: 100 }), null);
+assert.throws(() => m.parseLessons('{'));

@@ -1,6 +1,6 @@
 {
   "name": "guided-tour",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "title": "Guided tour",
   "description": "Step-by-step lessons that pause play while a player learns: steps, highlighting, pausing and progress kept on the device, with the lesson content supplied by the application.",
   "facilities": [
@@ -94,9 +94,9 @@
     "java": "26.0.1"
   },
   "platforms": [
-    "web",
+    "android",
     "apple",
-    "android"
+    "web"
   ],
   "text": {
     "purpose": "`guided-tour` teaches a person to use an application a little at a time. A lesson is a short list of steps; each step has a heading, a sentence and the name of the element on screen it is about. When the application asks for a lesson (`want`), it is shown once ever, after any already waiting: the screen is dimmed except a circle of light round the step's element, and a card on the other half of the screen gives the sentence with progress dots and Skip and Next (the last step ends the lesson). While a lesson is open `holding` is true so the host can hold play for everyone. Progress is kept on the device, one flag per lesson, along with whether the person wants to be guided at all (asked once). A lesson belongs to a screen and goes when that screen does. The mechanism is here and tested; the lessons are data the application supplies, and nothing in the component knows what the application is about. A small neutral sample lesson set (`tests/fixtures/lessons.json`) is the test data.",
@@ -126,5 +126,207 @@
       }
     ],
     "notes": "Pure library; no provider limits apply."
+  },
+  "classes": [
+    {
+      "reference": {
+        "name": "ourapps-ae/guided-tour-class",
+        "version": "1.0.0",
+        "digest": "49f31fee29711d15ea6d0064f4e9344880a266c0e5fba1811a367a554283010c"
+      },
+      "descriptor": {
+        "format": 1,
+        "name": "ourapps-ae/guided-tour-class",
+        "version": "1.0.0",
+        "provides": [
+          {
+            "type": "ae/guided-tour",
+            "version": "1.0.0",
+            "path": "classes/guided-tour-class/guided-tour.json",
+            "modules": {
+              "web": [
+                "web/index.ts"
+              ],
+              "android": [
+                "android/src/main/java"
+              ],
+              "ios": [
+                "apple/Sources"
+              ],
+              "macos": [
+                "apple/Sources"
+              ],
+              "tvos": [
+                "apple/Sources"
+              ],
+              "windows": [
+                "web/index.ts"
+              ]
+            }
+          }
+        ],
+        "requires": [
+          {
+            "type": "ae/controls",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/preferences",
+            "version": "1.0.0"
+          },
+          {
+            "type": "ae/language",
+            "version": "1.0.0"
+          }
+        ],
+        "settings": {
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": false
+        },
+        "inventory": [
+          {
+            "path": "classes/guided-tour-class/check.mjs",
+            "digest": "c01881bd9c94dc45d49b429f32944bdb7199421c16618641cf8ad6ddff29866e"
+          },
+          {
+            "path": "classes/guided-tour-class/guided-tour.json",
+            "digest": "0e6c4e75c33567bb00e60b9aa71dacd1c3a0c7422bd50107023db4a8ac9a271e"
+          },
+          {
+            "path": "classes/guided-tour-class/runtime.mjs",
+            "digest": "7440f3891614c423f74668cb5a2445fea58bbfa4d7c740c8e8a855d1d9300d43"
+          }
+        ],
+        "verification": [
+          {
+            "id": "shared",
+            "root": "package",
+            "argv": [
+              "node",
+              "classes/guided-tour-class/check.mjs"
+            ],
+            "cwd": ".",
+            "prepare": [],
+            "tools": {
+              "node": "26.5"
+            },
+            "fixtures": [
+              "classes/guided-tour-class/check.mjs"
+            ],
+            "locks": [],
+            "network": false,
+            "timeoutSeconds": 60,
+            "expectedExit": 0,
+            "scope": "required-local",
+            "requirements": []
+          }
+        ]
+      }
+    }
+  ],
+  "implements": [
+    {
+      "name": "ourapps-ae/guided-tour-class",
+      "version": "1.0.0",
+      "digest": "49f31fee29711d15ea6d0064f4e9344880a266c0e5fba1811a367a554283010c"
+    }
+  ],
+  "upstream": [],
+  "compatibility": {
+    "runtimes": {
+      "node": ">=26.5.0 <27.0.0",
+      "swift": "=6.4.2",
+      "ios": ">=17.0.0",
+      "macos": ">=14.0.0",
+      "tvos": ">=17.0.0",
+      "kotlin": "=2.3.20",
+      "java": ">=17.0.0 <27.0.0",
+      "android": ">=8.0.0"
+    },
+    "frameworks": {
+      "android-ui": {
+        "name": "androidx.compose.ui",
+        "range": "=1.10.0"
+      }
+    },
+    "dependencies": [
+      {
+        "name": "pkg:maven/androidx.compose.ui/ui",
+        "version": "1.10.0",
+        "isolation": "shared"
+      },
+      {
+        "name": "pkg:maven/androidx.compose.material3/material3",
+        "version": "1.4.0",
+        "isolation": "shared"
+      }
+    ],
+    "styles": {
+      "scope": "global",
+      "namespaces": [
+        ".gbuttons::gap",
+        ".gbuttons::margin-top",
+        ".gcard .gtext::font-size",
+        ".gcard .gtext::line-height",
+        ".gcard.above::top",
+        ".gcard.below::bottom",
+        ".gcard::background",
+        ".gcard::left",
+        ".gcard::position",
+        ".gcard::transform",
+        ".gcard::width",
+        ".gpages i.on::background",
+        ".gpages i::background",
+        ".gpages i::border-radius",
+        ".gpages i::display",
+        ".gpages i::height",
+        ".gpages i::width",
+        ".gpages::display",
+        ".gpages::gap",
+        ".gpages::justify-content",
+        ".gpages::margin-top",
+        ".gspot::border-radius",
+        ".gspot::box-shadow",
+        ".gspot::pointer-events",
+        ".gspot::position",
+        ".gspot::transition",
+        ".guide.nospot .gspot::display",
+        ".guide.nospot::background",
+        ".guide::inset",
+        ".guide::position",
+        ".guide::z-index"
+      ],
+      "conflicts": []
+    }
+  },
+  "maintenance": {
+    "owners": [
+      "Level N Ltd"
+    ],
+    "contact": "https://github.com/ourapps-ae/guided-tour/issues",
+    "repository": "https://github.com/ourapps-ae/guided-tour",
+    "updates": {
+      "source": "https://github.com/ourapps-ae/guided-tour/releases",
+      "strategy": "manual"
+    }
+  },
+  "supportedPlatforms": [
+    "android",
+    "ios",
+    "macos",
+    "tvos",
+    "web",
+    "windows"
+  ],
+  "licence": "Apache-2.0",
+  "licenceFile": "LICENCE",
+  "noticeFile": "NOTICE",
+  "templates": [],
+  "modules": {
+    "web": "web/index.ts",
+    "android": "android/src/main/java",
+    "apple": "apple/Sources"
   }
 }
