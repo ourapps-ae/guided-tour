@@ -5,6 +5,7 @@
     "node": "26.5",
     "python3": "3.12",
     "swiftc": "6.4",
+    "xcrun": "72",
     "kotlinc": "2.2",
     "java": "26.0"
   }
