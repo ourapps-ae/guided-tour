@@ -1,6 +1,6 @@
 {
   "name": "guided-tour",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "title": "Guided tour",
   "description": "Step-by-step lessons that pause play while a player learns: steps, highlighting, pausing and progress kept on the device, with the lesson content supplied by the application.",
   "facilities": [
@@ -145,13 +145,17 @@
     {
       "reference": {
         "name": "ourapps-ae/guided-tour-class",
-        "version": "1.0.0",
-        "digest": "49f31fee29711d15ea6d0064f4e9344880a266c0e5fba1811a367a554283010c"
+        "version": "1.1.0",
+        "digest": "23cab90db6b2e25dad68482cf90b5931cf965d901488a75c83aae0b315191405"
       },
       "descriptor": {
-        "format": 1,
+        "format": 2,
         "name": "ourapps-ae/guided-tour-class",
-        "version": "1.0.0",
+        "version": "1.1.0",
+        "title": "Guided tour",
+        "summary": "Step-by-step lessons that point at parts of the screen",
+        "category": "presentation/onboarding",
+        "presentation": "visual",
         "provides": [
           {
             "type": "ae/guided-tour",
@@ -243,8 +247,8 @@
   "implements": [
     {
       "name": "ourapps-ae/guided-tour-class",
-      "version": "1.0.0",
-      "digest": "49f31fee29711d15ea6d0064f4e9344880a266c0e5fba1811a367a554283010c"
+      "version": "1.1.0",
+      "digest": "23cab90db6b2e25dad68482cf90b5931cf965d901488a75c83aae0b315191405"
     }
   ],
   "upstream": [],
@@ -255,7 +259,7 @@
       "ios": ">=17.0.0",
       "macos": ">=14.0.0",
       "tvos": ">=17.0.0",
-      "kotlin": "=2.3.20",
+      "kotlin": "=2.4.21",
       "java": ">=17.0.0 <27.0.0",
       "android": ">=8.0.0"
     },
@@ -550,5 +554,33 @@
         "manual": "Without the package manager, install Node 26 from nodejs.org (the installer, or the zip or tar archive with its folder put first on PATH); on Linux also from the NodeSource repository."
       }
     ]
-  }
+  },
+  "release": {
+    "channel": "features",
+    "fixes": []
+  },
+  "images": [
+    {
+      "caption": "The first step of a lesson: the menu in a circle of light and the card below with Skip and Next",
+      "height": 700,
+      "path": "images/first-step.png",
+      "platform": "web",
+      "width": 1100
+    },
+    {
+      "caption": "The second step on the search field, in the lounge look",
+      "height": 700,
+      "path": "images/second-step-lounge.png",
+      "platform": "web",
+      "width": 1100
+    },
+    {
+      "caption": "The last step on the profile, with Got it in place of Next",
+      "height": 700,
+      "path": "images/last-step.png",
+      "platform": "web",
+      "width": 1100
+    }
+  ],
+  "vulnerabilityWaivers": []
 }
